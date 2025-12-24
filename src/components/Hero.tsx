@@ -18,17 +18,33 @@ const Hero = () => {
 
       <div className="relative z-10 text-center px-4">
         <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8 relative inline-block"
+        >
+          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-blue-500/30 overflow-hidden relative z-10 mx-auto">
+            <img 
+              src="/profile.jpg" 
+              alt="Jawad Yazbek" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 animate-pulse rounded-full" />
+        </motion.div>
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <h2 className="text-blue-500 font-medium tracking-wider mb-4 uppercase">
+          <h2 className={`text-blue-500 font-medium tracking-wider mb-4 uppercase ${isRTL ? 'font-arabic text-sm' : ''}`}>
             {t.hero.welcome}
           </h2>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
+          <h1 className={`text-5xl md:text-7xl font-bold mb-6 text-white ${isRTL ? 'font-arabic leading-tight' : ''}`}>
             {t.hero.greeting} <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">{t.hero.name}</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+          <p className={`text-xl text-gray-400 max-w-2xl mx-auto mb-10 ${isRTL ? 'font-arabic font-light leading-relaxed' : ''}`}>
             {t.hero.description}
           </p>
         </motion.div>
@@ -41,7 +57,7 @@ const Hero = () => {
         >
           <a
             href="#projects"
-            className="group px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all flex items-center gap-2"
+            className={`group px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all flex items-center gap-2 ${isRTL ? 'font-arabic' : ''}`}
           >
             {t.hero.viewWork}
             <ArrowRight className={`${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'} transition-transform`} size={18} />
