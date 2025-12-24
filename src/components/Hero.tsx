@@ -3,8 +3,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Github, Linkedin } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Hero = () => {
+  const { t, isRTL } = useLanguage();
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background decoration */}
@@ -20,14 +23,13 @@ const Hero = () => {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-blue-500 font-medium tracking-wider mb-4 uppercase">
-            Welcome to my portfolio
+            {t.hero.welcome}
           </h2>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
-            Hi, I'm <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Jawad Yazbek</span>
+            {t.hero.greeting} <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">{t.hero.name}</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-            A passionate developer building modern web experiences with focus on performance, 
-            scalability, and user experience.
+            {t.hero.description}
           </p>
         </motion.div>
 
@@ -35,14 +37,14 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}
         >
           <a
             href="#projects"
             className="group px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all flex items-center gap-2"
           >
-            View My Work
-            <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+            {t.hero.viewWork}
+            <ArrowRight className={`${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'} transition-transform`} size={18} />
           </a>
           <div className="flex items-center gap-4">
             <a

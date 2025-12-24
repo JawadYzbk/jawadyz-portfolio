@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "welcome": "Welcome to my portfolio",
+    "greeting": "Hi, I'm",
+    "name": "Jawad Yazbek",
+    "description": "A passionate developer building modern web experiences with focus on performance, scalability, and user experience.",
+    "viewWork": "View My Work"
+  },
+  "about": {
+    "title": "About Me",
+    "p1": "I'm a full-stack developer with a passion for building digital products that solve real-world problems. With a strong foundation in both frontend and backend technologies, I strive to create seamless user experiences.",
+    "p2": "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge with the developer community.",
+    "experience": "Years of Experience",
+    "skills": {
+      "frontend": "Frontend",
+      "frontendDesc": "React, Next.js, Tailwind CSS, TypeScript",
+      "backend": "Backend",
+      "backendDesc": "Node.js, Express, PostgreSQL, MongoDB",
+      "design": "UI/UX Design",
+      "designDesc": "Figma, Responsive Design, Animations",
+      "tools": "Tools",
+      "toolsDesc": "Git, Docker, Vercel, AWS"
+    }
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "Here are some of my recent projects that showcase my skills and experience.",
+    "items": {
+      "rustlink": {
+        "title": "RustLink",
+        "description": "An unofficial RUST+ alternative for PC. Interactive map experience using websocket protocol to communicate with Rust game servers."
+      },
+      "abbas": {
+        "title": "Abbas Center",
+        "description": "A professional web platform developed for the Abbas Center organization, providing community resources and information."
+      },
+      "sandok": {
+        "title": "Sandok Taadod",
+        "description": "A specialized local networked platform for cooperative fund management and community financial tracking."
+      },
+      "optical": {
+        "title": "Optical Clinic",
+        "description": "A comprehensive management system for optical clinics, featuring patient records, appointments, and prescriptions."
+      }
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "I'm always open to new opportunities and collaborations. Whether you have a question or just want to say hi, I'll try my best to get back to you!",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your Name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Your message...",
+      "send": "Send Message"
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "builtWith": "Built with Next.js, Tailwind CSS, and Framer Motion."
+  }
+}

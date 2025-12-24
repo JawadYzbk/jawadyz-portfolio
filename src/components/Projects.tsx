@@ -3,36 +3,39 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Projects = () => {
+  const { t, isRTL } = useLanguage();
+
   const projects = [
     {
-      title: 'RustLink',
-      description: 'An unofficial RUST+ alternative for PC. Interactive map experience using websocket protocol to communicate with Rust game servers.',
+      title: t.projects.items.rustlink.title,
+      description: t.projects.items.rustlink.description,
       tags: ['Electron', 'React', 'Node.js', 'Socket.io'],
       github: 'https://github.com/JawadYzbk/rustLink',
       demo: 'https://github.com/JawadYzbk/rustLink/releases',
       image: 'https://raw.githubusercontent.com/JawadYzbk/rustLink/refs/heads/master/docs/map.png',
     },
     {
-      title: 'Abbas Center',
-      description: 'A professional web platform developed for the Abbas Center organization, providing community resources and information.',
+      title: t.projects.items.abbas.title,
+      description: t.projects.items.abbas.description,
       tags: ['Laravel', 'Inertia.js', 'React', 'Tailwind CSS'],
       github: 'https://github.com/JawadYzbk',
       demo: 'http://abbascenter.org/',
       image: 'https://i.ibb.co/HLqqjpgD/image.png',
     },
     {
-      title: 'Sandok Taadod',
-      description: 'A specialized local networked platform for cooperative fund management and community financial tracking.',
+      title: t.projects.items.sandok.title,
+      description: t.projects.items.sandok.description,
       tags: ['Local Network', 'Management System', 'Financial Tools'],
       github: '#',
       demo: '#',
       image: 'https://i.ibb.co/fV0zsspK/image.png',
     },
     {
-      title: 'Optical Clinic',
-      description: 'A comprehensive management system for optical clinics, featuring patient records, appointments, and prescriptions.',
+      title: t.projects.items.optical.title,
+      description: t.projects.items.optical.description,
       tags: ['Laravel', 'React', 'Redux', 'MySQL'],
       github: 'https://github.com/JawadYzbk/opticalClinic-react',
       demo: '#',
@@ -43,14 +46,14 @@ const Projects = () => {
   return (
     <section id="projects" className="py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-3xl font-bold text-white mb-4"
           >
-            Featured Projects
+            {t.projects.title}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +62,7 @@ const Projects = () => {
             transition={{ delay: 0.1 }}
             className="text-gray-400 max-w-2xl mx-auto"
           >
-            Here are some of my recent projects that showcase my skills and experience.
+            {t.projects.subtitle}
           </motion.p>
         </div>
 

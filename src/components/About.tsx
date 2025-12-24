@@ -3,33 +3,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Palette, Terminal, Cpu } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const About = () => {
+  const { t, isRTL } = useLanguage();
+
   const skills = [
-    { icon: <Terminal size={24} />, title: 'Frontend', desc: 'React, Next.js, Tailwind CSS, TypeScript' },
-    { icon: <Code2 size={24} />, title: 'Backend', desc: 'Node.js, Express, PostgreSQL, MongoDB' },
-    { icon: <Palette size={24} />, title: 'UI/UX Design', desc: 'Figma, Responsive Design, Animations' },
-    { icon: <Cpu size={24} />, title: 'Tools', desc: 'Git, Docker, Vercel, AWS' },
+    { icon: <Terminal size={24} />, title: t.about.skills.frontend, desc: t.about.skills.frontendDesc },
+    { icon: <Code2 size={24} />, title: t.about.skills.backend, desc: t.about.skills.backendDesc },
+    { icon: <Palette size={24} />, title: t.about.skills.design, desc: t.about.skills.designDesc },
+    { icon: <Cpu size={24} />, title: t.about.skills.tools, desc: t.about.skills.toolsDesc },
   ];
 
   return (
     <section id="about" className="py-24 bg-black/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className={`grid md:grid-cols-2 gap-12 items-center ${isRTL ? 'text-right' : ''}`}>
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-6 text-white">About Me</h2>
+            <h2 className="text-3xl font-bold mb-6 text-white">{t.about.title}</h2>
             <p className="text-gray-400 mb-6 text-lg leading-relaxed">
-              I'm a full-stack developer with a passion for building digital products that solve 
-              real-world problems. With a strong foundation in both frontend and backend 
-              technologies, I strive to create seamless user experiences.
+              {t.about.p1}
             </p>
             <p className="text-gray-400 mb-8 text-lg leading-relaxed">
-              When I'm not coding, you can find me exploring new technologies, contributing 
-              to open-source projects, or sharing my knowledge with the developer community.
+              {t.about.p2}
             </p>
             
             <div className="grid grid-cols-2 gap-4">
@@ -44,7 +44,7 @@ const About = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="relative"
@@ -53,7 +53,7 @@ const About = () => {
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-20 grayscale" />
               <div className="relative z-10 p-8 text-center">
                 <div className="text-6xl font-bold text-white mb-2">2+</div>
-                <div className="text-gray-400">Years of Experience</div>
+                <div className="text-gray-400">{t.about.experience}</div>
               </div>
             </div>
           </motion.div>
