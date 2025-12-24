@@ -21,7 +21,7 @@ const Projects = () => {
       title: t.projects.items.abbas.title,
       description: t.projects.items.abbas.description,
       tags: ['Laravel', 'Inertia.js', 'React', 'Tailwind CSS'],
-      github: 'https://github.com/JawadYzbk',
+      github: '#',
       demo: 'http://abbascenter.org/',
       image: 'https://i.ibb.co/HLqqjpgD/image.png',
     },
