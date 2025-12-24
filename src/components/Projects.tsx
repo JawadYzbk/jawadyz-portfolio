@@ -41,6 +41,14 @@ const Projects = () => {
       demo: '#',
       image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop',
     },
+    {
+      title: t.projects.items.portfolio.title,
+      description: t.projects.items.portfolio.description,
+      tags: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'TypeScript'],
+      github: 'https://github.com/JawadYzbk/jawadyz-portfolio',
+      demo: 'https://jawadyz-portfolio.vercel.app/',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+    },
   ];
 
   return (

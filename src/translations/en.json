@@ -46,6 +46,10 @@
       "optical": {
         "title": "Optical Clinic",
         "description": "A comprehensive management system for optical clinics, featuring patient records, appointments, and prescriptions."
+      },
+      "portfolio": {
+        "title": "Jawad.dev Portfolio",
+        "description": "My personal portfolio website built with Next.js, Tailwind CSS, and Framer Motion. Featuring multi-language support (English/Arabic) and a fully responsive RTL/LTR layout."
       }
     }
   },
