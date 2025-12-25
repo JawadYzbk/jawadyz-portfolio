@@ -22,7 +22,7 @@ const Projects = () => {
       description: t.projects.items.abbas.description,
       tags: ['Laravel', 'Inertia.js', 'React', 'Tailwind CSS'],
       github: '#',
-      demo: 'http://abbascenter.org/',
+      demo: 'https://abbascenter.org/',
       image: 'https://i.ibb.co/HLqqjpgD/image.png',
     },
     {
