@@ -31,6 +31,15 @@
     "title": "Featured Projects",
     "subtitle": "Here are some of my recent projects that showcase my skills and experience.",
     "items": {
+      "isp": {
+        "title": "NexaISP - Operations Platform",
+        "description": "A multi-tenant ISP operations and reseller platform connecting subscriber CRM, service provisioning, automated billing, invoicing, field dispatch, and network operations into a unified workspace."
+      },
+      "rustplus": {
+        "title": "Rust+ Desktop",
+        "badge": "Core Contributor",
+        "description": "An open-source desktop companion application for the Rust+ ecosystem. Contributed the core intelligence system, architectural hardening, background logic, advanced shop search, and 3D map features."
+      },
       "rustlink": {
         "title": "RustLink",
         "description": "An unofficial RUST+ alternative for PC. Interactive map experience using websocket protocol to communicate with Rust game servers."

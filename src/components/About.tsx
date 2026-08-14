@@ -59,7 +59,7 @@ const About = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-20" />
               <div className="relative z-30 p-8 text-center mt-auto w-full bg-black/40 backdrop-blur-sm border-t border-white/10">
-                <div className="text-6xl font-bold text-white mb-2">2+</div>
+                <div className="text-6xl font-bold text-white mb-2">5+</div>
                 <div className={`text-gray-300 font-medium ${isRTL ? 'font-arabic' : ''}`}>{t.about.experience}</div>
               </div>
             </div>

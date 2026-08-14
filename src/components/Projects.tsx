@@ -8,7 +8,32 @@ import { useLanguage } from '@/context/LanguageContext';
 const Projects = () => {
   const { t, isRTL } = useLanguage();
 
-  const projects = [
+  const projects: Array<{
+    title: string;
+    description: string;
+    tags: string[];
+    github: string;
+    demo: string;
+    image: string;
+    badge?: string;
+  }> = [
+    {
+      title: t.projects.items.isp.title,
+      description: t.projects.items.isp.description,
+      tags: ['Laravel', 'Inertia.js', 'React', 'TypeScript', 'Tailwind CSS', 'Redis'],
+      github: 'https://github.com/JawadYzbk/ISPResellerPlatform',
+      demo: '#',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop',
+    },
+    {
+      title: t.projects.items.rustplus.title,
+      description: t.projects.items.rustplus.description,
+      badge: t.projects.items.rustplus.badge,
+      tags: ['C# / .NET', 'Node.js', 'WebSocket', 'WebView2', 'Rust+ API'],
+      github: 'https://github.com/JawadYzbk/rustplus-desktop',
+      demo: 'https://rustplusdesktop.cloud/',
+      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop',
+    },
     {
       title: t.projects.items.rustlink.title,
       description: t.projects.items.rustlink.description,
@@ -82,67 +107,78 @@ const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className={`group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all ${isRTL ? 'text-right' : ''}`}
+              className={`group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all flex flex-col justify-between ${isRTL ? 'text-right' : ''}`}
             >
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className={`absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {project.github !== '#' ? (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
-                      title={isRTL ? 'عرض الكود' : 'View Code'}
-                    >
-                      <Github size={20} />
-                    </a>
-                  ) : (
-                    <div 
-                      className="p-3 bg-white/20 text-gray-400 rounded-full cursor-not-allowed"
-                      title={isRTL ? 'الكود غير متوفر' : 'Code not available'}
-                    >
-                      <Github size={20} />
+              <div>
+                <div className="aspect-video relative overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {project.badge && (
+                    <div className={`absolute top-3 ${isRTL ? 'right-3' : 'left-3'} z-10`}>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/70 backdrop-blur-md border border-blue-500/40 text-blue-400 text-xs font-semibold rounded-full shadow-lg">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                        {project.badge}
+                      </span>
                     </div>
                   )}
-                  
-                  {project.demo !== '#' ? (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
-                      title={isRTL ? 'عرض المشروع' : 'Live Demo'}
-                    >
-                      <ExternalLink size={20} />
-                    </a>
-                  ) : (
-                    <div 
-                      className="p-3 bg-white/20 text-gray-400 rounded-full cursor-not-allowed"
-                      title={isRTL ? 'المعرض غير متوفر' : 'Demo not available'}
-                    >
-                      <ExternalLink size={20} />
-                    </div>
-                  )}
+                  <div className={`absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    {project.github !== '#' ? (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors shadow-md hover:scale-105 active:scale-95 duration-200"
+                        title={isRTL ? 'عرض الكود' : 'View Code'}
+                      >
+                        <Github size={20} />
+                      </a>
+                    ) : (
+                      <div 
+                        className="p-3 bg-white/20 text-gray-400 rounded-full cursor-not-allowed"
+                        title={isRTL ? 'الكود غير متوفر' : 'Code not available'}
+                      >
+                        <Github size={20} />
+                      </div>
+                    )}
+                    
+                    {project.demo !== '#' ? (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors shadow-md hover:scale-105 active:scale-95 duration-200"
+                        title={isRTL ? 'عرض المشروع' : 'Live Demo'}
+                      >
+                        <ExternalLink size={20} />
+                      </a>
+                    ) : (
+                      <div 
+                        className="p-3 bg-white/20 text-gray-400 rounded-full cursor-not-allowed"
+                        title={isRTL ? 'المعرض غير متوفر' : 'Demo not available'}
+                      >
+                        <ExternalLink size={20} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className={`text-xl font-bold text-white mb-2 ${isRTL ? 'font-arabic' : ''}`}>{project.title}</h3>
+                  <p className={`text-gray-400 mb-4 text-sm ${isRTL ? 'font-arabic font-light leading-relaxed' : ''}`}>{project.description}</p>
+                  <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-full border border-white/10 ${isRTL ? 'font-arabic' : ''}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className={`text-xl font-bold text-white mb-2 ${isRTL ? 'font-arabic' : ''}`}>{project.title}</h3>
-                <p className={`text-gray-400 mb-4 text-sm ${isRTL ? 'font-arabic font-light leading-relaxed' : ''}`}>{project.description}</p>
-                <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className={`px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-full border border-white/10 ${isRTL ? 'font-arabic' : ''}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
 
                 {/* Mobile Actions */}
                 <div className={`mt-6 pt-6 border-t border-white/5 flex gap-4 md:hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -169,7 +205,6 @@ const Projects = () => {
                     </a>
                   )}
                 </div>
-              </div>
             </motion.div>
           ))}
         </div>
