@@ -1,114 +1,100 @@
 @import "tailwindcss";
 
-/* `dark:` follows the system theme unless the visitor chose one explicitly. */
-@custom-variant dark {
-  &:where([data-theme="dark"] *) {
-    @slot;
-  }
-  @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme="light"]) *) {
-      @slot;
-    }
-  }
-}
+/* `dark:` applies only when the visitor picks the dark theme. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /*
- * Theme tokens. Light is the base; dark applies from the system preference
- * unless the visitor picked a theme (stored in a cookie, rendered as data-theme).
- * Radius rule: interactive controls are pills, cards and media are 1rem,
- * form fields are 0.75rem.
+ * Visual language adapted from the Refero "Apple iPhone Duo" style reference:
+ * a white gallery canvas, #f5f5f7 bands, ink type with tight negative
+ * tracking, 28px shadowless cards, pill controls, blue for actions and a
+ * small orange label colour. Light is the default; dark is opt-in.
  */
 :root {
   color-scheme: light;
-  --bg: #f4f4f5;
-  --surface: #fbfbfb;
-  --surface-2: #ebebed;
-  --line: #dededf;
-  --fg: #17171a;
-  --muted: #55555c;
-  --subtle: #6b6b72;
-  --accent: #a4501d;
-  --accent-fg: #fdfaf7;
-  --accent-soft: rgb(164 80 29 / 0.12);
-  --danger: #b42318;
-  --success: #1f7a4d;
-  --shadow: 0 1px 2px rgb(23 23 26 / 0.04), 0 12px 32px -12px rgb(23 23 26 / 0.12);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #111112;
-    --surface: #18181a;
-    --surface-2: #202023;
-    --line: #2a2a2e;
-    --fg: #ededee;
-    --muted: #a3a3a9;
-    --subtle: #8a8a91;
-    --accent: #df8d55;
-    --accent-fg: #170d06;
-    --accent-soft: rgb(223 141 85 / 0.14);
-    --danger: #f2877d;
-    --success: #6fcf9a;
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
-  }
+  --canvas: #ffffff;
+  --band: #f5f5f7;
+  --card: #ffffff;
+  --frost: rgb(250 250 252 / 0.82);
+  --line: #d6d6d6;
+  --control: #e6e6e8;
+  --track: rgb(210 210 215 / 0.64);
+  --fg: #1d1d1f;
+  --muted: #707070;
+  --steel: #86868b;
+  --link: #0066cc;
+  --action: #0071e3;
+  --action-fg: #ffffff;
+  --label: #b64400;
+  --danger: #c4161c;
+  --scrim: rgb(0 0 0 / 0.48);
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #111112;
-  --surface: #18181a;
-  --surface-2: #202023;
-  --line: #2a2a2e;
-  --fg: #ededee;
-  --muted: #a3a3a9;
-  --subtle: #8a8a91;
-  --accent: #df8d55;
-  --accent-fg: #170d06;
-  --accent-soft: rgb(223 141 85 / 0.14);
-  --danger: #f2877d;
-  --success: #6fcf9a;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+  --canvas: #000000;
+  --band: #101011;
+  --card: #1d1d1f;
+  --frost: rgb(22 22 23 / 0.8);
+  --line: #424245;
+  --control: #333336;
+  --track: rgb(66 66 69 / 0.72);
+  --fg: #f5f5f7;
+  --muted: #a1a1a6;
+  --steel: #86868b;
+  --link: #2997ff;
+  --action: #0071e3;
+  --action-fg: #ffffff;
+  --label: #ff8a3d;
+  --danger: #ff6961;
+  --scrim: rgb(0 0 0 / 0.64);
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
+  --color-canvas: var(--canvas);
+  --color-band: var(--band);
+  --color-card: var(--card);
+  --color-frost: var(--frost);
   --color-line: var(--line);
+  --color-control: var(--control);
+  --color-track: var(--track);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --color-subtle: var(--subtle);
-  --color-accent: var(--accent);
-  --color-accent-fg: var(--accent-fg);
-  --color-accent-soft: var(--accent-soft);
+  --color-steel: var(--steel);
+  --color-link: var(--link);
+  --color-action: var(--action);
+  --color-action-fg: var(--action-fg);
+  --color-label: var(--label);
   --color-danger: var(--danger);
-  --color-success: var(--success);
-  --shadow-card: var(--shadow);
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* SF Pro on Apple devices through the system stack, Inter everywhere else. */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", var(--font-inter), "Helvetica Neue",
+    Arial, sans-serif;
+  --radius-card: 28px;
 }
 
 @layer base {
   html {
-    background: var(--bg);
+    background: var(--canvas);
     color: var(--fg);
     -webkit-text-size-adjust: 100%;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 4rem;
   }
 
   body {
-    background: var(--bg);
+    background: var(--canvas);
     color: var(--fg);
     font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.022em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
 
-  /* Arabic uses Plex Sans Arabic; Latin words inside it fall back to Geist. */
   html:lang(ar) body {
-    font-family: var(--font-ibm-plex-arabic), var(--font-geist-sans), ui-sans-serif, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, var(--font-ibm-plex-arabic), var(--font-inter), "Helvetica Neue", Arial,
+      sans-serif;
   }
 
   /* Letter-spacing breaks Arabic joining. */
@@ -117,18 +103,44 @@
   }
 
   ::selection {
-    background: var(--accent-soft);
-    color: var(--fg);
+    background: rgb(0 113 227 / 0.18);
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--action);
     outline-offset: 3px;
   }
 
   html:has(dialog[open]) {
     overflow: hidden;
   }
+}
+
+/* Type roles from the reference scale. */
+@utility text-hero {
+  font-size: clamp(2.75rem, 1.4rem + 5.4vw, 5rem);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+@utility text-section {
+  font-size: clamp(2rem, 1.3rem + 2.8vw, 3.5rem);
+  line-height: 1.07;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+@utility text-lead {
+  font-size: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3125rem);
+  line-height: 1.38;
+  letter-spacing: 0.011em;
+}
+
+@utility text-caption {
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: -0.01em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -138,17 +150,12 @@
 
   /* Hero entrance runs in CSS so it starts at first paint, before hydration. */
   .rise {
-    animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
   }
 
-  .settle {
-    animation: settle 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* Sections ease in as they enter the viewport where scroll timelines exist. */
+  /* Transform only, so text at the fold is never left half-faded. */
   @supports (animation-timeline: view()) {
-    /* Transform only, so text at the fold is never left half-faded. */
     .reveal {
       animation: lift linear both;
       animation-timeline: view();
@@ -159,17 +166,17 @@
   .project-dialog,
   .project-dialog::backdrop {
     transition:
-      opacity 0.25s ease,
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      overlay 0.25s allow-discrete,
-      display 0.25s allow-discrete;
+      opacity 0.3s ease,
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      overlay 0.3s allow-discrete,
+      display 0.3s allow-discrete;
   }
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
@@ -179,16 +186,7 @@
 
 @keyframes lift {
   from {
-    transform: translateY(32px);
-  }
-  to {
-    transform: none;
-  }
-}
-
-@keyframes settle {
-  from {
-    transform: scale(1.04);
+    transform: translateY(40px);
   }
   to {
     transform: none;
@@ -197,7 +195,7 @@
 
 .project-dialog {
   opacity: 0;
-  transform: translateY(16px) scale(0.98);
+  transform: translateY(24px) scale(0.98);
 }
 
 .project-dialog[open] {
@@ -206,7 +204,8 @@
 }
 
 .project-dialog::backdrop {
-  background: rgb(10 10 11 / 0.7);
+  background: var(--scrim);
+  backdrop-filter: blur(20px);
   opacity: 0;
 }
 
@@ -217,15 +216,10 @@
 @starting-style {
   .project-dialog[open] {
     opacity: 0;
-    transform: translateY(16px) scale(0.98);
+    transform: translateY(24px) scale(0.98);
   }
 
   .project-dialog[open]::backdrop {
     opacity: 0;
   }
-}
-
-/* Rust+ Desktop banner sits on its own artwork colours when letterboxed. */
-.banner-plate {
-  background: linear-gradient(90deg, #0b2420, #04100e 55%, #010605);
 }

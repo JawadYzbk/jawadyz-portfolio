@@ -108,11 +108,11 @@ try {
     check('language toggle switches to RTL Arabic', await page.evaluate(() => document.documentElement.dir === 'rtl' && document.documentElement.lang === 'ar'));
     check('Arabic copy is rendered', (await page.locator('h1').innerText()).includes('أنظمة معقّدة.'));
     await page.getByRole('button', { name: 'تغيير المظهر' }).click();
-    check('theme toggle overrides the system theme', (await page.evaluate(() => document.documentElement.dataset.theme)) === 'light');
+    check('theme toggle switches to dark', (await page.evaluate(() => document.documentElement.dataset.theme)) === 'dark');
     const response = await page.reload({ waitUntil: 'networkidle' });
     const html = await response.text();
     check('server renders the saved language', html.includes('lang="ar"') && html.includes('dir="rtl"'));
-    check('server renders the saved theme', html.includes('data-theme="light"'));
+    check('server renders the saved theme', html.includes('data-theme="dark"'));
     await page.getByRole('button', { name: 'Switch to English' }).click();
     check('language toggles back to English', (await page.evaluate(() => document.documentElement.dir)) === 'ltr');
     await page.context().close();

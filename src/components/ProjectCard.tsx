@@ -1,122 +1,93 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import Image from 'next/image';
 import { m } from 'framer-motion';
-import { ArrowUpRight, Code2, Globe } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { Project } from '@/data/projects';
 import { useLanguage } from '@/context/LanguageContext';
-import { iconButton } from './ui';
 
 type Props = {
   project: Project;
-  /** Lead cards span the full row with the image beside the text. */
+  /** Lead cards span the full row with the text beside the image. */
   lead?: boolean;
   onOpen: (project: Project, trigger: HTMLButtonElement) => void;
 };
 
-export function TagList({ tags, className = '' }: { tags: string[]; className?: string }) {
+export function StackLine({ tags, className = '' }: { tags: string[]; className?: string }) {
   return (
-    <ul className={`flex flex-wrap gap-1.5 ${className}`}>
-      {tags.map((tag) => (
-        <li
-          key={tag}
-          dir="ltr"
-          className="rounded-full border border-line px-2.5 py-1 font-mono text-[11.5px] leading-none text-muted"
-        >
-          {tag}
-        </li>
-      ))}
-    </ul>
+    <p dir="ltr" className={`text-[14px] leading-[1.29] tracking-[-0.016em] text-muted rtl:text-right ${className}`}>
+      {tags.join(', ')}
+    </p>
   );
 }
 
 const ProjectCard = forwardRef<HTMLElement, Props>(function ProjectCard({ project, lead = false, onOpen }, ref) {
   const { t, language } = useLanguage();
+  const button = useRef<HTMLButtonElement>(null);
   const { image } = project;
+  const open = () => button.current && onOpen(project, button.current);
 
   return (
     <m.article
       ref={ref}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.98 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,box-shadow] duration-300 hover:border-subtle hover:shadow-card ${
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      onClick={open}
+      className={`group relative flex cursor-pointer flex-col overflow-hidden rounded-[28px] bg-card ${
         lead ? 'md:col-span-2 lg:flex-row' : ''
-      }`}
+      } ${image ? '' : 'pb-16'}`}
     >
-      {image && (
-        <div
-          className={`relative aspect-[16/10] shrink-0 overflow-hidden border-b border-line ${
-            lead ? 'lg:aspect-auto lg:min-h-[26rem] lg:w-[58%] lg:border-e lg:border-b-0' : ''
-          } ${image.fit === 'contain' ? 'banner-plate' : 'bg-surface-2'}`}
+      <div className={`p-7 md:p-8 ${lead ? 'lg:flex lg:w-[40%] lg:shrink-0 lg:flex-col lg:justify-center lg:p-12' : ''}`}>
+        <p className="text-caption font-semibold text-label">{project.role[language]}</p>
+        <h3
+          className={`mt-2 font-semibold ${
+            lead ? 'text-[28px] leading-[1.1] md:text-[40px]' : 'text-[24px] leading-[1.17] tracking-[0.009em]'
+          }`}
         >
-          <Image
-            src={image.src}
-            alt={image.alt[language]}
-            fill
-            sizes={lead ? '(min-width: 1024px) 700px, (min-width: 768px) 90vw, 100vw' : '(min-width: 768px) 600px, 100vw'}
-            className={
-              image.fit === 'contain'
-                ? 'object-contain px-6'
-                : 'object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]'
-            }
-          />
+          <bdi>{project.title}</bdi>
+        </h3>
+        <p className={`mt-3 ${lead ? 'text-lead' : 'text-[17px] leading-[1.47]'}`}>{project.summary[language]}</p>
+        <StackLine tags={project.tags} className="mt-3" />
+      </div>
+
+      {image && (
+        <div className={`mt-auto ps-7 md:ps-8 ${lead ? 'lg:mt-12 lg:flex-1 lg:ps-0' : ''}`}>
+          <div
+            className={`relative overflow-hidden rounded-ss-[14px] border-s border-t border-line ${
+              lead ? 'aspect-[16/10] lg:aspect-auto lg:h-[26rem]' : 'aspect-[16/10]'
+            } ${image.fit === 'contain' ? 'bg-[#050b0a]' : 'bg-band'}`}
+          >
+            <Image
+              src={image.src}
+              alt={image.alt[language]}
+              fill
+              sizes={lead ? '(min-width: 1024px) 640px, 92vw' : '(min-width: 768px) 520px, 92vw'}
+              className={
+                image.fit === 'contain'
+                  ? 'object-contain px-6'
+                  : 'object-cover object-left-top transition-transform duration-700 ease-out group-hover:scale-[1.02]'
+              }
+            />
+          </div>
         </div>
       )}
 
-      <div className={`flex flex-1 flex-col p-6 ${lead ? 'lg:justify-center lg:p-10' : ''}`}>
-        <p className="text-sm font-medium text-accent">{project.role[language]}</p>
-        <h3 className={`mt-2 font-semibold tracking-tight ${lead ? 'text-2xl lg:text-3xl' : 'text-xl'}`}>
-          <bdi>{project.title}</bdi>
-        </h3>
-        <p className={`mt-2 leading-relaxed text-muted ${lead ? 'lg:text-lg' : ''}`}>{project.summary[language]}</p>
-        <TagList tags={project.tags} className="mt-5" />
-
-        <div className="mt-auto flex items-center justify-between gap-3 pt-6">
-          <button
-            type="button"
-            onClick={(event) => onOpen(project, event.currentTarget)}
-            aria-haspopup="dialog"
-            className="inline-flex items-center gap-1.5 rounded-full text-sm font-semibold text-fg after:absolute after:inset-0 after:rounded-2xl after:content-['']"
-          >
-            {t.projects.story}
-            <span className="sr-only">: {project.title}</span>
-            <ArrowUpRight
-              className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5"
-              strokeWidth={2}
-              aria-hidden
-            />
-          </button>
-          <div className="relative z-10 flex gap-1">
-            {project.repo && (
-              <a
-                href={project.repo}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${t.projects.source}: ${project.title}`}
-                title={t.projects.source}
-                className={iconButton}
-              >
-                <Code2 className="size-[18px]" strokeWidth={1.75} aria-hidden />
-              </a>
-            )}
-            {project.live && (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${t.projects.live}: ${project.title}`}
-                title={t.projects.live}
-                className={iconButton}
-              >
-                <Globe className="size-[18px]" strokeWidth={1.75} aria-hidden />
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
+      <button
+        ref={button}
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          open();
+        }}
+        aria-haspopup="dialog"
+        aria-label={`${t.projects.story}: ${project.title}`}
+        className="absolute end-5 bottom-5 z-10 flex size-9 items-center justify-center rounded-full bg-fg/85 text-canvas backdrop-blur transition-transform duration-300 group-hover:scale-110"
+      >
+        <Plus className="size-5" strokeWidth={2.25} aria-hidden />
+      </button>
     </m.article>
   );
 });

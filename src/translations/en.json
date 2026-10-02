@@ -20,7 +20,8 @@
     "description": "I build business platforms, desktop applications, and real-time tools with Laravel, React, and Next.js.",
     "viewWork": "View projects",
     "contact": "Contact",
-    "imageAlt": "An architectural assembly of connected graphite, glass, and copper elements"
+    "imageAlt": "An architectural assembly of connected graphite, glass, and copper elements",
+    "available": "Available"
   },
   "projects": {
     "title": "Built to do real work.",

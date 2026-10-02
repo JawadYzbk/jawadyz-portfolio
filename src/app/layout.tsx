@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
-import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from 'next/font/google';
+import { IBM_Plex_Sans_Arabic, Inter } from 'next/font/google';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { profile, siteUrl } from '@/data/profile';
 import { LANGUAGE_COOKIE, THEME_COOKIE, parseLanguage, parseTheme } from '@/lib/preferences';
 import './globals.css';
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
-// Mono and Arabic faces are not needed for the first English paint, so they load on demand.
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'], preload: false });
+// Apple devices render the system SF Pro; Inter is the fallback elsewhere.
+const inter = Inter({ variable: '--font-inter', subsets: ['latin'] });
+// Arabic is not needed for the first English paint, so it loads on demand.
 const plexArabic = IBM_Plex_Sans_Arabic({
   variable: '--font-ibm-plex-arabic',
   subsets: ['arabic'],
@@ -42,10 +42,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f4f4f5' },
-    { media: '(prefers-color-scheme: dark)', color: '#111112' },
-  ],
+  themeColor: '#ffffff',
 };
 
 const personJsonLd = {
@@ -74,7 +71,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       lang={language}
       dir={language === 'ar' ? 'rtl' : 'ltr'}
       data-theme={theme}
-      className={`${geistSans.variable} ${geistMono.variable} ${plexArabic.variable}`}
+      className={`${inter.variable} ${plexArabic.variable}`}
     >
       <body>
         <script

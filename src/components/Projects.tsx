@@ -7,7 +7,7 @@ import { categories, projects, type Category, type Project } from '@/data/projec
 import { format, useLanguage } from '@/context/LanguageContext';
 import ProjectCard from './ProjectCard';
 import ProjectDialog from './ProjectDialog';
-import { buttonSecondary, container } from './ui';
+import { buttonOutline, container, section } from './ui';
 
 type Filter = 'all' | Category;
 
@@ -42,20 +42,22 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" aria-labelledby="projects-title" className="border-t border-line py-20 md:py-28">
+    <section id="projects" aria-labelledby="projects-title" className={`bg-band ${section}`}>
       <div className={container}>
         <div className="reveal max-w-2xl">
-          <h2 id="projects-title" className="text-4xl font-semibold tracking-[-0.03em] text-balance md:text-5xl">
+          <h2 id="projects-title" className="text-section text-balance">
             {t.projects.title}
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-muted">{t.projects.subtitle}</p>
+          <p className="text-lead mt-5 text-muted">{t.projects.subtitle}</p>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div
             role="group"
             aria-label={t.projects.filterLabel}
-            className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0"
+            className="-mx-5 flex overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:px-0"
+          >
+            <div className="flex shrink-0 gap-1 rounded-full bg-track p-1 backdrop-blur"
           >
             {filters.map((value) => {
               const active = filter === value;
@@ -65,26 +67,25 @@ export default function Projects() {
                   type="button"
                   aria-pressed={active}
                   onClick={() => setFilter(value)}
-                  className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors duration-200 ${
-                    active
-                      ? 'border-fg bg-fg text-bg'
-                      : 'border-line bg-surface text-muted hover:border-subtle hover:text-fg'
+                  className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-4 text-[14px] tracking-[-0.016em] transition-[background-color,color,box-shadow] duration-200 ${
+                    active ? 'bg-card text-fg shadow-[0_0_0_1px_var(--control)]' : 'text-fg/70 hover:text-fg'
                   }`}
                 >
                   {t.projects[value]}
-                  <span className={`font-mono text-xs ${active ? 'text-bg/70' : 'text-subtle'}`}>{countFor(value)}</span>
+                  <span className="text-caption text-muted">{countFor(value)}</span>
                 </button>
               );
             })}
+            </div>
           </div>
-          <p aria-live="polite" className="shrink-0 text-sm text-subtle">
+          <p aria-live="polite" className="text-caption shrink-0 text-muted">
             {format(t.projects.showing, { shown: visible.length, total: projects.length })}
           </p>
         </div>
 
         <div id="project-list" className="mt-8">
           {visible.length === 0 ? (
-            <p className="rounded-2xl border border-dashed border-line px-6 py-16 text-center text-muted">
+            <p className="rounded-[28px] bg-card px-6 py-16 text-center text-muted">
               {t.projects.empty}
             </p>
           ) : (
@@ -124,7 +125,7 @@ export default function Projects() {
               onClick={toggleExpanded}
               aria-expanded={expanded}
               aria-controls="project-list"
-              className={buttonSecondary}
+              className={buttonOutline}
             >
               {expanded ? (
                 <Minus className="size-4" strokeWidth={2} aria-hidden />

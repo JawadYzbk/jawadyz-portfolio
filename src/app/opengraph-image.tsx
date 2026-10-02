@@ -13,24 +13,25 @@ export default function OpenGraphImage() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center',
           justifyContent: 'space-between',
           padding: 80,
-          background: '#111112',
-          color: '#ededee',
+          background: '#ffffff',
+          color: '#1d1d1f',
+          textAlign: 'center',
         }}
       >
         <div style={{ display: 'flex', fontSize: 34, fontWeight: 600 }}>
-          Jawad<span style={{ color: '#df8d55' }}>.dev</span>
+          Jawad.dev
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: 96, fontWeight: 700, letterSpacing: -3, lineHeight: 1.04 }}>Complex systems.</div>
-          <div style={{ fontSize: 96, fontWeight: 700, letterSpacing: -3, lineHeight: 1.04, color: '#a3a3a9' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ fontSize: 96, fontWeight: 600, letterSpacing: -1.5, lineHeight: 1.05 }}>Complex systems.</div>
+          <div style={{ fontSize: 96, fontWeight: 600, letterSpacing: -1.5, lineHeight: 1.05 }}>
             Useful software.
           </div>
         </div>
-        <div style={{ display: 'flex', fontSize: 30, color: '#a3a3a9' }}>
-          Jawad Yazbek&nbsp;&nbsp;<span style={{ color: '#df8d55' }}>/</span>&nbsp;&nbsp;Full-stack developer, Laravel, React &amp;
-          Next.js
+        <div style={{ display: 'flex', fontSize: 30, color: '#707070' }}>
+          Jawad Yazbek, full-stack developer
         </div>
       </div>
     ),

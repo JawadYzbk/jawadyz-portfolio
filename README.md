@@ -1,76 +1,73 @@
-# Jawad Yazbek - Personal Portfolio
+# Jawad Yazbek - Portfolio
 
-A modern, responsive, and multilingual portfolio website built with the latest web technologies. Featuring a seamless transition between English (LTR) and Arabic (RTL) layouts.
+Bilingual (English / Arabic) portfolio for Jawad Yazbek, full-stack developer. Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4 and Motion.
 
-![Portfolio Preview](public/profile.jpg)
+Live site: https://jawadyz-portfolio.vercel.app/
 
-## 🚀 Features
+## Features
 
-- **Multilingual Support**: Fully localized in English and Arabic.
-- **RTL/LTR Layout**: Dynamic layout switching that respects language direction.
-- **Modern UI/UX**: Built with Tailwind CSS 4 and Framer Motion for smooth animations and a premium feel.
-- **Responsive Design**: Optimized for all devices, from mobile phones to large desktops.
-- **Functional Contact Form**: Integrated with Web3Forms for serverless email delivery.
-- **Project Showcase**: Highlights key projects with detailed descriptions and tech stacks.
+- English and Arabic with full right-to-left layouts. The chosen language and theme are stored in cookies and rendered on the server, so there is no flash on reload.
+- Project showcase built from typed, bilingual data (`src/data/projects.ts`): category filters, a selected-work view that expands to all projects, and an accessible detail dialog that separates own projects from open-source contributions.
+- Contact form posting to Web3Forms, with inline validation, sending, success and error states, a spam trap and a direct email fallback.
+- Light theme by default with an optional dark theme, reduced-motion support, keyboard and screen-reader friendly controls.
+- SEO metadata, canonical URL, Person structured data, generated favicon, Apple icon and Open Graph image, robots.txt and sitemap.
 
-## 🛠️ Tech Stack
+The visual language follows the Refero "Apple iPhone Duo" style reference: white gallery canvas, `#f5f5f7` bands, 28px shadowless cards, pill controls and tight system typography (SF Pro on Apple devices, Inter elsewhere).
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Deployment**: [Vercel](https://vercel.com/)
-
-## 📁 Project Structure
+## Project structure
 
 ```text
 src/
-├── app/            # Next.js App Router pages and global styles
-├── components/     # Reusable React components (Hero, About, Projects, etc.)
-├── context/        # Language and Theme context providers
-├── translations/   # Localization JSON files (EN/AR)
-└── public/         # Static assets (images, icons)
+├── app/            # Layout, page, metadata routes (icons, OG image, robots, sitemap)
+├── components/     # Header, Hero, Projects, ProjectCard, ProjectDialog, About, Contact, Footer
+├── context/        # Language provider (dictionary, direction, Motion config)
+├── data/           # Profile details and the project catalogue
+├── lib/            # Language and theme cookie helpers
+└── translations/   # en.json and ar.json
+scripts/
+└── verify-ui.mjs   # Playwright checks for filters, dialog, preferences, menu and form
 ```
 
-## ⚙️ Getting Started
+## Getting started
 
-### Prerequisites
+```bash
+npm install
+npm run dev
+```
 
-- Node.js 18.x or later
-- npm or yarn
+Open http://localhost:3000.
 
-### Installation
+### Environment variables
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/JawadYzbk/jawadyz-portfolio.git
-   ```
+Create `.env.local`:
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+```env
+# Web3Forms access key. Without it the form is replaced by an email link.
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
+# Optional: canonical site URL (defaults to https://jawadyz-portfolio.vercel.app)
+NEXT_PUBLIC_SITE_URL=https://jawadyz-portfolio.vercel.app
+```
 
-3. Set up environment variables:
-   Create a `.env.local` file and add your Web3Forms access key:
-   ```env
-   NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
-   ```
+Set the same variables in the Vercel project settings for production.
 
-4. Run the development server:
-   ```bash
-   npm run dev
-   ```
+## Checks
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-## 📝 License
+UI checks run against a production server started with a placeholder form key. Web3Forms requests are intercepted, so no message is sent:
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```bash
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=placeholder npm run build
+npx next start -p 3100
+npm run verify:ui -- http://localhost:3100
+```
 
-## 📧 Contact
+The first run may need a browser: `npx playwright install chromium`.
 
-Jawad Yazbek - [jawadyazbek@gmail.com](mailto:jawadyazbek@gmail.com)
+## Contact
 
-Project Link: [https://github.com/JawadYzbk/jawadyz-portfolio](https://github.com/JawadYzbk/jawadyz-portfolio)
+Jawad Yazbek - [jawadyazbek@gmail.com](mailto:jawadyazbek@gmail.com) - [GitHub](https://github.com/JawadYzbk) - [LinkedIn](https://www.linkedin.com/in/jawad-yazbek2k/)

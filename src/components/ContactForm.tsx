@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { AlertCircle, ArrowUpRight, Check, LoaderCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { profile } from '@/data/profile';
-import { buttonPrimary, buttonSecondary } from './ui';
+import { buttonOutline, buttonPrimary } from './ui';
 
 const ENDPOINT = 'https://api.web3forms.com/submit';
 const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
@@ -14,7 +14,7 @@ type Field = 'name' | 'email' | 'message';
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
 const inputClass =
-  'w-full rounded-xl border border-line bg-bg px-4 text-fg outline-none transition-[border-color,box-shadow] duration-200 placeholder:text-subtle focus:border-accent focus:ring-4 focus:ring-accent-soft aria-[invalid=true]:border-danger';
+  'w-full border border-steel bg-canvas px-6 text-[17px] text-fg outline-none transition-[border-color,box-shadow] duration-200 placeholder:text-muted focus:border-action focus:ring-4 focus:ring-action/20 aria-[invalid=true]:border-danger';
 
 export default function ContactForm() {
   const { t } = useLanguage();
@@ -24,7 +24,7 @@ export default function ContactForm() {
 
   if (!accessKey) {
     return (
-      <div className="rounded-2xl border border-line bg-surface p-8">
+      <div className="rounded-[28px] bg-card p-8 md:p-10">
         <p className="leading-relaxed text-muted">{t.contact.unconfigured}</p>
         <a href={`mailto:${profile.email}`} className={`${buttonPrimary} mt-6`}>
           {t.contact.emailLink}
@@ -39,13 +39,13 @@ export default function ContactForm() {
         ref={successRef}
         tabIndex={-1}
         role="status"
-        className="flex flex-col items-start rounded-2xl border border-line bg-surface p-8 outline-none"
+        className="flex flex-col items-start rounded-[28px] bg-card p-8 outline-none md:p-10"
       >
-        <span className="flex size-11 items-center justify-center rounded-full bg-accent-soft text-accent">
+        <span className="flex size-11 items-center justify-center rounded-full bg-action text-action-fg">
           <Check className="size-5" strokeWidth={2} aria-hidden />
         </span>
-        <p className="mt-5 text-xl font-semibold">{t.contact.success}</p>
-        <button type="button" onClick={() => setStatus('idle')} className={`${buttonSecondary} mt-6`}>
+        <p className="mt-5 text-[24px] leading-[1.17] font-semibold">{t.contact.success}</p>
+        <button type="button" onClick={() => setStatus('idle')} className={`${buttonOutline} mt-6`}>
           {t.contact.again}
         </button>
       </div>
@@ -110,7 +110,7 @@ export default function ContactForm() {
 
   const fieldError = (name: Field) =>
     errors[name] ? (
-      <p id={`contact-${name}-error`} className="text-sm text-danger">
+      <p id={`contact-${name}-error`} className="ps-6 text-[14px] text-danger">
         {errors[name]}
       </p>
     ) : null;
@@ -123,11 +123,11 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
       aria-label={t.contact.formTitle}
       aria-busy={sending}
-      className="grid gap-5 rounded-2xl border border-line bg-surface p-6 sm:p-8"
+      className="grid gap-5 rounded-[28px] bg-card p-6 sm:p-10"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="grid gap-2">
-          <label htmlFor="contact-name" className="text-sm font-medium">
+          <label htmlFor="contact-name" className="text-[14px] font-semibold">
             {t.contact.form.name}
           </label>
           <input
@@ -137,12 +137,12 @@ export default function ContactForm() {
             required
             maxLength={120}
             placeholder={t.contact.form.namePlaceholder}
-            className={`${inputClass} h-12`}
+            className={`${inputClass} h-12 rounded-full`}
           />
           {fieldError('name')}
         </div>
         <div className="grid gap-2">
-          <label htmlFor="contact-email" className="text-sm font-medium">
+          <label htmlFor="contact-email" className="text-[14px] font-semibold">
             {t.contact.form.email}
           </label>
           <input
@@ -154,14 +154,14 @@ export default function ContactForm() {
             required
             maxLength={254}
             placeholder={t.contact.form.emailPlaceholder}
-            className={`${inputClass} h-12 rtl:text-right`}
+            className={`${inputClass} h-12 rounded-full rtl:text-right`}
           />
           {fieldError('email')}
         </div>
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="contact-message" className="text-sm font-medium">
+        <label htmlFor="contact-message" className="text-[14px] font-semibold">
           {t.contact.form.message}
         </label>
         <textarea
@@ -170,7 +170,7 @@ export default function ContactForm() {
           rows={6}
           maxLength={5000}
           placeholder={t.contact.form.messagePlaceholder}
-          className={`${inputClass} resize-y py-3 leading-relaxed`}
+          className={`${inputClass} resize-y rounded-[22px] py-3.5 leading-[1.47]`}
         />
         {fieldError('message')}
       </div>
@@ -179,11 +179,11 @@ export default function ContactForm() {
       <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
       {status === 'error' && (
-        <div role="alert" className="flex gap-3 rounded-xl border border-danger/40 bg-danger/10 p-4 text-sm">
+        <div role="alert" className="flex gap-3 rounded-[18px] bg-danger/10 p-4 text-[14px]">
           <AlertCircle className="mt-0.5 size-4 shrink-0 text-danger" strokeWidth={2} aria-hidden />
           <p className="leading-relaxed">
             {t.contact.error}{' '}
-            <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-1 font-semibold underline underline-offset-4">
+            <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-1 text-link underline underline-offset-4">
               {t.contact.emailLink}
               <ArrowUpRight className="size-3.5 rtl:-scale-x-100" strokeWidth={2} aria-hidden />
             </a>
