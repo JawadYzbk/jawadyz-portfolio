@@ -51,13 +51,12 @@ export default function Projects() {
           <p className="text-lead mt-5 text-muted">{t.projects.subtitle}</p>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          {/* Two rows on phones so every filter stays visible; a single segmented row from sm up. */}
           <div
             role="group"
             aria-label={t.projects.filterLabel}
-            className="-mx-5 flex overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:px-0"
-          >
-            <div className="flex shrink-0 gap-1 rounded-full bg-track p-1 backdrop-blur"
+            className="grid grid-cols-2 gap-1 rounded-[22px] bg-track p-1 backdrop-blur sm:inline-flex sm:w-fit sm:rounded-full"
           >
             {filters.map((value) => {
               const active = filter === value;
@@ -67,7 +66,7 @@ export default function Projects() {
                   type="button"
                   aria-pressed={active}
                   onClick={() => setFilter(value)}
-                  className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-4 text-[14px] tracking-[-0.016em] transition-[background-color,color,box-shadow] duration-200 ${
+                  className={`inline-flex h-9 min-w-0 items-center justify-center gap-1.5 rounded-full px-3 text-[14px] tracking-[-0.016em] whitespace-nowrap transition-[background-color,color,box-shadow] duration-200 sm:px-4 ${
                     active ? 'bg-card text-fg shadow-[0_0_0_1px_var(--control)]' : 'text-fg/70 hover:text-fg'
                   }`}
                 >
@@ -76,7 +75,6 @@ export default function Projects() {
                 </button>
               );
             })}
-            </div>
           </div>
           <p aria-live="polite" className="text-caption shrink-0 text-muted">
             {format(t.projects.showing, { shown: visible.length, total: projects.length })}
