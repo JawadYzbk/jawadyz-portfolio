@@ -1,19 +1,21 @@
-import Navbar from '@/components/Navbar';
+import SiteHeader from '@/components/SiteHeader';
 import Hero from '@/components/Hero';
-import About from '@/components/About';
 import Projects from '@/components/Projects';
+import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black">
-      <Navbar />
-      <Hero />
-      <About />
-      <Projects />
-      <Contact />
-      <Footer />
-    </main>
+    <>
+      <SiteHeader />
+      <main id="content" tabIndex={-1} className="outline-none">
+        <Hero />
+        <Projects />
+        <About />
+        <Contact />
+      </main>
+      <Footer year={new Date().getFullYear()} />
+    </>
   );
 }

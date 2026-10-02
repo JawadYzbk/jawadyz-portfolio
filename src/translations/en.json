@@ -1,82 +1,94 @@
 {
   "nav": {
+    "main": "Main",
     "about": "About",
     "projects": "Projects",
-    "contact": "Contact"
+    "contact": "Contact",
+    "menu": "Open navigation",
+    "close": "Close navigation",
+    "language": "Switch to Arabic",
+    "languageShort": "عربي",
+    "theme": "Change color theme",
+    "skip": "Skip to content",
+    "github": "GitHub profile",
+    "linkedin": "LinkedIn profile"
   },
   "hero": {
-    "welcome": "Welcome to my portfolio",
-    "greeting": "Hi, I'm",
-    "name": "Jawad Yazbek",
-    "description": "A passionate developer building modern web experiences with focus on performance, scalability, and user experience.",
-    "viewWork": "View My Work"
-  },
-  "about": {
-    "title": "About Me",
-    "p1": "I'm a full-stack developer with a passion for building digital products that solve real-world problems. With a strong foundation in both frontend and backend technologies, I strive to create seamless user experiences.",
-    "p2": "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing my knowledge with the developer community.",
-    "experience": "Years of Experience",
-    "skills": {
-      "frontend": "Frontend",
-      "frontendDesc": "React, Next.js, Tailwind CSS, TypeScript",
-      "backend": "Backend",
-      "backendDesc": "Node.js, Express, PostgreSQL, MongoDB",
-      "design": "UI/UX Design",
-      "designDesc": "Figma, Responsive Design, Animations",
-      "tools": "Tools",
-      "toolsDesc": "Git, Docker, Vercel, AWS"
-    }
+    "welcome": "Jawad Yazbek · Full-stack developer",
+    "line1": "Complex systems.",
+    "line2": "Useful software.",
+    "description": "I build business platforms, desktop applications, and real-time tools with Laravel, React, and Next.js.",
+    "viewWork": "View projects",
+    "contact": "Contact",
+    "imageAlt": "An architectural assembly of connected graphite, glass, and copper elements"
   },
   "projects": {
-    "title": "Featured Projects",
-    "subtitle": "Here are some of my recent projects that showcase my skills and experience.",
-    "items": {
-      "isp": {
-        "title": "NexaISP - Operations Platform",
-        "description": "A multi-tenant ISP operations and reseller platform connecting subscriber CRM, service provisioning, automated billing, invoicing, field dispatch, and network operations into a unified workspace."
-      },
-      "rustplus": {
-        "title": "Rust+ Desktop",
-        "badge": "Core Contributor",
-        "description": "An open-source desktop companion application for the Rust+ ecosystem. Contributed the core intelligence system, architectural hardening, background logic, advanced shop search, and 3D map features."
-      },
-      "rustlink": {
-        "title": "RustLink",
-        "description": "An unofficial RUST+ alternative for PC. Interactive map experience using websocket protocol to communicate with Rust game servers."
-      },
-      "abbas": {
-        "title": "Abbas Center",
-        "description": "A professional web platform developed for the Abbas Center organization, providing community resources and information."
-      },
-      "sandok": {
-        "title": "Sandok Taadod",
-        "description": "A specialized local networked platform for cooperative fund management and community financial tracking."
-      },
-      "optical": {
-        "title": "Optical Clinic",
-        "description": "A comprehensive management system for optical clinics, featuring patient records, appointments, and prescriptions."
-      },
-      "portfolio": {
-        "title": "Jawad.dev Portfolio",
-        "description": "My personal portfolio website built with Next.js, Tailwind CSS, and Framer Motion. Featuring multi-language support (English/Arabic) and a fully responsive RTL/LTR layout."
-      }
-    }
+    "title": "Built to do real work.",
+    "subtitle": "From ISP operations to game analytics. Products I’ve built and open-source projects I’ve contributed to.",
+    "filterLabel": "Filter projects by category",
+    "all": "All work",
+    "business": "Business platforms",
+    "desktop": "Desktop & tools",
+    "opensource": "Open source",
+    "story": "Explore project",
+    "source": "Source code",
+    "live": "Visit website",
+    "more": "Explore all {count} projects",
+    "less": "Show selected work",
+    "showing": "Showing {shown} of {total} projects",
+    "role": "My role",
+    "built": "What I built",
+    "stack": "Technology",
+    "links": "Links",
+    "close": "Close project",
+    "private": "Public demo unavailable",
+    "empty": "No projects in this category."
+  },
+  "about": {
+    "title": "The person behind the systems.",
+    "p1": "I’m Jawad, a full-stack developer based in Lebanon. I connect interfaces, APIs, data, and background processes into products that make complicated workflows easier to use.",
+    "p2": "My work spans ISP operations, clinic administration, community platforms, deployment utilities, and the Rust+ ecosystem. I build my own products and contribute to collaborative open-source applications.",
+    "educationLabel": "Education",
+    "education": "B.S. in Computer Science",
+    "school": "Lebanese International University",
+    "availabilityLabel": "Availability",
+    "availability": "Open to remote roles and project collaborations",
+    "capabilities": "What I work with",
+    "frontend": "Interfaces",
+    "frontendDesc": "React · Next.js · TypeScript · Tailwind CSS",
+    "backend": "Business systems",
+    "backendDesc": "Laravel · PHP · Inertia.js · SQL · Redis",
+    "desktop": "Desktop & integrations",
+    "desktopDesc": "C# · .NET · WPF · Electron · Python · WebSocket",
+    "portraitAlt": "Jawad Yazbek outdoors"
   },
   "contact": {
-    "title": "Get In Touch",
-    "description": "I'm always open to new opportunities and collaborations. Whether you have a question or just want to say hi, I'll try my best to get back to you!",
+    "title": "Have something worth building?",
+    "description": "Tell me about the product, the problem, or the team. I’m open to remote development opportunities and project collaborations.",
+    "emailLabel": "Email",
+    "emailLink": "Email me",
+    "formTitle": "Send a message",
     "form": {
       "name": "Name",
-      "namePlaceholder": "Your Name",
+      "namePlaceholder": "Your name",
       "email": "Email",
-      "emailPlaceholder": "your@email.com",
+      "emailPlaceholder": "you@example.com",
       "message": "Message",
-      "messagePlaceholder": "Your message...",
-      "send": "Send Message"
-    }
+      "messagePlaceholder": "What are you working on?",
+      "send": "Send message",
+      "nameRequired": "Enter your name.",
+      "emailInvalid": "Enter a valid email address.",
+      "messageRequired": "Write a short message."
+    },
+    "sending": "Sending…",
+    "success": "Message sent. Thanks for reaching out!",
+    "error": "Couldn’t send your message. Please try again or email me directly.",
+    "unconfigured": "Use the email link to get in touch. The message form is currently unavailable.",
+    "again": "Send another message"
   },
   "footer": {
     "rights": "All rights reserved.",
-    "builtWith": "Built with Next.js, Tailwind CSS, and Framer Motion."
+    "top": "Back to top",
+    "signature": "Interfaces. Systems. Things that work."
   }
 }

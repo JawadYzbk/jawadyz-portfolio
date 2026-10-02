@@ -1,20 +1,231 @@
 @import "tailwindcss";
 
+/* `dark:` follows the system theme unless the visitor chose one explicitly. */
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
+/*
+ * Theme tokens. Light is the base; dark applies from the system preference
+ * unless the visitor picked a theme (stored in a cookie, rendered as data-theme).
+ * Radius rule: interactive controls are pills, cards and media are 1rem,
+ * form fields are 0.75rem.
+ */
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
+  color-scheme: light;
+  --bg: #f4f4f5;
+  --surface: #fbfbfb;
+  --surface-2: #ebebed;
+  --line: #dededf;
+  --fg: #17171a;
+  --muted: #55555c;
+  --subtle: #6b6b72;
+  --accent: #a4501d;
+  --accent-fg: #fdfaf7;
+  --accent-soft: rgb(164 80 29 / 0.12);
+  --danger: #b42318;
+  --success: #1f7a4d;
+  --shadow: 0 1px 2px rgb(23 23 26 / 0.04), 0 12px 32px -12px rgb(23 23 26 / 0.12);
 }
 
-* {
-  scroll-behavior: smooth;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111112;
+    --surface: #18181a;
+    --surface-2: #202023;
+    --line: #2a2a2e;
+    --fg: #ededee;
+    --muted: #a3a3a9;
+    --subtle: #8a8a91;
+    --accent: #df8d55;
+    --accent-fg: #170d06;
+    --accent-soft: rgb(223 141 85 / 0.14);
+    --danger: #f2877d;
+    --success: #6fcf9a;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans);
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111112;
+  --surface: #18181a;
+  --surface-2: #202023;
+  --line: #2a2a2e;
+  --fg: #ededee;
+  --muted: #a3a3a9;
+  --subtle: #8a8a91;
+  --accent: #df8d55;
+  --accent-fg: #170d06;
+  --accent-soft: rgb(223 141 85 / 0.14);
+  --danger: #f2877d;
+  --success: #6fcf9a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -16px rgb(0 0 0 / 0.6);
 }
 
-.font-arabic {
-  font-family: var(--font-ibm-plex-arabic), sans-serif;
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --shadow-card: var(--shadow);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Arabic uses Plex Sans Arabic; Latin words inside it fall back to Geist. */
+  html:lang(ar) body {
+    font-family: var(--font-ibm-plex-arabic), var(--font-geist-sans), ui-sans-serif, sans-serif;
+  }
+
+  /* Letter-spacing breaks Arabic joining. */
+  html:lang(ar) * {
+    letter-spacing: 0 !important;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Hero entrance runs in CSS so it starts at first paint, before hydration. */
+  .rise {
+    animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .settle {
+    animation: settle 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Sections ease in as they enter the viewport where scroll timelines exist. */
+  @supports (animation-timeline: view()) {
+    /* Transform only, so text at the fold is never left half-faded. */
+    .reveal {
+      animation: lift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+
+  .project-dialog,
+  .project-dialog::backdrop {
+    transition:
+      opacity 0.25s ease,
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      overlay 0.25s allow-discrete,
+      display 0.25s allow-discrete;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lift {
+  from {
+    transform: translateY(32px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.project-dialog {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+}
+
+.project-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+.project-dialog::backdrop {
+  background: rgb(10 10 11 / 0.7);
+  opacity: 0;
+}
+
+.project-dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .project-dialog[open] {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+
+  .project-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Rust+ Desktop banner sits on its own artwork colours when letterboxed. */
+.banner-plate {
+  background: linear-gradient(90deg, #0b2420, #04100e 55%, #010605);
 }

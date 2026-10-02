@@ -1,93 +1,61 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Github, Linkedin } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { buttonPrimary, buttonSecondary, container } from './ui';
 
-const Hero = () => {
-  const { t, isRTL } = useLanguage();
+const step = (i: number) => ({ '--i': i }) as React.CSSProperties;
+
+export default function Hero() {
+  const { t } = useLanguage();
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse delay-700" />
-      </div>
-
-      <div className="relative z-10 text-center px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8 relative inline-block"
-        >
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-blue-500/30 overflow-hidden relative z-10 mx-auto">
-            <img 
-              src="/profile.jpg" 
-              alt="Jawad Yazbek" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute inset-0 bg-blue-500 blur-2xl opacity-20 animate-pulse rounded-full" />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <h2 className={`text-blue-500 font-medium tracking-wider mb-4 uppercase ${isRTL ? 'font-arabic text-sm' : ''}`}>
+    <section id="top" aria-labelledby="hero-title">
+      <div
+        className={`${container} grid items-center gap-12 pt-12 pb-16 md:pt-16 lg:min-h-[min(calc(100dvh-4rem),46rem)] lg:grid-cols-12 lg:gap-10 lg:py-16`}
+      >
+        <div className="lg:col-span-7">
+          <p className="rise text-sm font-medium text-muted" style={step(0)}>
             {t.hero.welcome}
-          </h2>
-          <h1 className={`text-5xl md:text-7xl font-bold mb-6 text-white ${isRTL ? 'font-arabic leading-tight' : ''}`}>
-            {t.hero.greeting} <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">{t.hero.name}</span>
+          </p>
+          <h1
+            id="hero-title"
+            className="rise mt-5 text-[2.6rem] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-6xl xl:text-[4.25rem]"
+            style={step(1)}
+          >
+            <span className="block">{t.hero.line1}</span>
+            <span className="block text-muted">{t.hero.line2}</span>
           </h1>
-          <p className={`text-xl text-gray-400 max-w-2xl mx-auto mb-10 ${isRTL ? 'font-arabic font-light leading-relaxed' : ''}`}>
+          <p className="rise mt-6 max-w-[34rem] text-lg leading-relaxed text-muted" style={step(2)}>
             {t.hero.description}
           </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}
-        >
-          <a
-            href="#projects"
-            className={`group px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all flex items-center gap-2 ${isRTL ? 'font-arabic' : ''}`}
-          >
-            {t.hero.viewWork}
-            <ArrowRight className={`${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'} transition-transform`} size={18} />
-          </a>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/JawadYzbk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-white"
-            >
-              <Github size={24} />
+          <div className="rise mt-9 flex flex-wrap gap-3" style={step(3)}>
+            <a href="#projects" className={buttonPrimary}>
+              {t.hero.viewWork}
+              <ArrowDown className="size-4" strokeWidth={2} aria-hidden />
             </a>
-            <a
-              href="https://www.linkedin.com/in/jawad-yazbek2k/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all text-white"
-            >
-              <Linkedin size={24} />
+            <a href="#contact" className={buttonSecondary}>
+              {t.hero.contact}
             </a>
           </div>
-        </motion.div>
-      </div>
+        </div>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-1 h-12 rounded-full bg-gradient-to-b from-blue-500 to-transparent" />
+        <div className="lg:col-span-5">
+          <div className="overflow-hidden rounded-2xl border border-line bg-[#141414] dark:border-transparent">
+            <Image
+              src="/images/system-sculpture.webp"
+              alt={t.hero.imageAlt}
+              width={1400}
+              height={933}
+              loading="eager"
+              fetchPriority="high"
+              sizes="(min-width: 1240px) 480px, (min-width: 1024px) 40vw, 100vw"
+              className="settle h-auto w-full"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

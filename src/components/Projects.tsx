@@ -1,216 +1,147 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, Github } from 'lucide-react';
-import { useLanguage } from '@/context/LanguageContext';
+import { useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { Minus, Plus } from 'lucide-react';
+import { categories, projects, type Category, type Project } from '@/data/projects';
+import { format, useLanguage } from '@/context/LanguageContext';
+import ProjectCard from './ProjectCard';
+import ProjectDialog from './ProjectDialog';
+import { buttonSecondary, container } from './ui';
 
-const Projects = () => {
-  const { t, isRTL } = useLanguage();
+type Filter = 'all' | Category;
 
-  const projects: Array<{
-    title: string;
-    description: string;
-    tags: string[];
-    github: string;
-    demo: string;
-    image: string;
-    badge?: string;
-  }> = [
-    {
-      title: t.projects.items.isp.title,
-      description: t.projects.items.isp.description,
-      tags: ['Laravel', 'Inertia.js', 'React', 'TypeScript', 'Tailwind CSS', 'Redis'],
-      github: 'https://github.com/JawadYzbk/ISPResellerPlatform',
-      demo: '#',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop',
-    },
-    {
-      title: t.projects.items.rustplus.title,
-      description: t.projects.items.rustplus.description,
-      badge: t.projects.items.rustplus.badge,
-      tags: ['C# / .NET', 'Node.js', 'WebSocket', 'WebView2', 'Rust+ API'],
-      github: 'https://github.com/JawadYzbk/rustplus-desktop',
-      demo: 'https://rustplusdesktop.cloud/',
-      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop',
-    },
-    {
-      title: t.projects.items.rustlink.title,
-      description: t.projects.items.rustlink.description,
-      tags: ['Electron', 'React', 'Node.js', 'Socket.io'],
-      github: 'https://github.com/JawadYzbk/rustLink',
-      demo: 'https://github.com/JawadYzbk/rustLink/releases',
-      image: 'https://raw.githubusercontent.com/JawadYzbk/rustLink/refs/heads/master/docs/map.png',
-    },
-    {
-      title: t.projects.items.abbas.title,
-      description: t.projects.items.abbas.description,
-      tags: ['Laravel', 'Inertia.js', 'React', 'Tailwind CSS'],
-      github: '#',
-      demo: 'https://abbascenter.org/',
-      image: 'https://i.ibb.co/HLqqjpgD/image.png',
-    },
-    {
-      title: t.projects.items.sandok.title,
-      description: t.projects.items.sandok.description,
-      tags: ['Local Network', 'Management System', 'Financial Tools'],
-      github: '#',
-      demo: '#',
-      image: 'https://i.ibb.co/fV0zsspK/image.png',
-    },
-    {
-      title: t.projects.items.optical.title,
-      description: t.projects.items.optical.description,
-      tags: ['Laravel', 'React', 'Redux', 'MySQL'],
-      github: 'https://github.com/JawadYzbk/opticalClinic-react',
-      demo: '#',
-      image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop',
-    },
-    {
-      title: t.projects.items.portfolio.title,
-      description: t.projects.items.portfolio.description,
-      tags: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'TypeScript'],
-      github: 'https://github.com/JawadYzbk/jawadyz-portfolio',
-      demo: 'https://jawadyz-portfolio.vercel.app/',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
-    },
-  ];
+const filters: Filter[] = ['all', ...categories];
+const countFor = (filter: Filter) =>
+  filter === 'all' ? projects.length : projects.filter((project) => project.category === filter).length;
+
+export default function Projects() {
+  const { t } = useLanguage();
+  const [filter, setFilter] = useState<Filter>('all');
+  const [expanded, setExpanded] = useState(false);
+  const [selected, setSelected] = useState<Project | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  const matching = filter === 'all' ? projects : projects.filter((project) => project.category === filter);
+  const visible = filter === 'all' && !expanded ? matching.filter((project) => project.featured) : matching;
+  const withImages = visible.filter((project) => project.image);
+  const withoutImages = visible.filter((project) => !project.image);
+
+  const openProject = (project: Project, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger;
+    setSelected(project);
+    dialogRef.current?.showModal();
+  };
+
+  const toggleExpanded = () => {
+    setExpanded((value) => !value);
+    // Collapsing removes cards above the toggle; keep it under the pointer.
+    if (expanded) requestAnimationFrame(() => toggleRef.current?.scrollIntoView({ block: 'center' }));
+  };
 
   return (
-    <section id="projects" className="py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`text-center mb-16 ${isRTL ? 'text-right' : ''}`}>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className={`text-3xl font-bold text-white mb-4 ${isRTL ? 'font-arabic' : ''}`}
-          >
+    <section id="projects" aria-labelledby="projects-title" className="border-t border-line py-20 md:py-28">
+      <div className={container}>
+        <div className="reveal max-w-2xl">
+          <h2 id="projects-title" className="text-4xl font-semibold tracking-[-0.03em] text-balance md:text-5xl">
             {t.projects.title}
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className={`text-gray-400 max-w-2xl mx-auto ${isRTL ? 'font-arabic font-light' : ''}`}
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted">{t.projects.subtitle}</p>
+        </div>
+
+        <div className="mt-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div
+            role="group"
+            aria-label={t.projects.filterLabel}
+            className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0"
           >
-            {t.projects.subtitle}
-          </motion.p>
+            {filters.map((value) => {
+              const active = filter === value;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setFilter(value)}
+                  className={`inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors duration-200 ${
+                    active
+                      ? 'border-fg bg-fg text-bg'
+                      : 'border-line bg-surface text-muted hover:border-subtle hover:text-fg'
+                  }`}
+                >
+                  {t.projects[value]}
+                  <span className={`font-mono text-xs ${active ? 'text-bg/70' : 'text-subtle'}`}>{countFor(value)}</span>
+                </button>
+              );
+            })}
+          </div>
+          <p aria-live="polite" className="shrink-0 text-sm text-subtle">
+            {format(t.projects.showing, { shown: visible.length, total: projects.length })}
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={`group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all flex flex-col justify-between ${isRTL ? 'text-right' : ''}`}
-            >
-              <div>
-                <div className="aspect-video relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                  />
-                  {project.badge && (
-                    <div className={`absolute top-3 ${isRTL ? 'right-3' : 'left-3'} z-10`}>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/70 backdrop-blur-md border border-blue-500/40 text-blue-400 text-xs font-semibold rounded-full shadow-lg">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-                        {project.badge}
-                      </span>
-                    </div>
-                  )}
-                  <div className={`absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    {project.github !== '#' ? (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors shadow-md hover:scale-105 active:scale-95 duration-200"
-                        title={isRTL ? 'عرض الكود' : 'View Code'}
-                      >
-                        <Github size={20} />
-                      </a>
-                    ) : (
-                      <div 
-                        className="p-3 bg-white/20 text-gray-400 rounded-full cursor-not-allowed"
-                        title={isRTL ? 'الكود غير متوفر' : 'Code not available'}
-                      >
-                        <Github size={20} />
-                      </div>
-                    )}
-                    
-                    {project.demo !== '#' ? (
-                      <a
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors shadow-md hover:scale-105 active:scale-95 duration-200"
-                        title={isRTL ? 'عرض المشروع' : 'Live Demo'}
-                      >
-                        <ExternalLink size={20} />
-                      </a>
-                    ) : (
-                      <div 
-                        className="p-3 bg-white/20 text-gray-400 rounded-full cursor-not-allowed"
-                        title={isRTL ? 'المعرض غير متوفر' : 'Demo not available'}
-                      >
-                        <ExternalLink size={20} />
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className={`text-xl font-bold text-white mb-2 ${isRTL ? 'font-arabic' : ''}`}>{project.title}</h3>
-                  <p className={`text-gray-400 mb-4 text-sm ${isRTL ? 'font-arabic font-light leading-relaxed' : ''}`}>{project.description}</p>
-                  <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={`px-3 py-1 bg-white/5 text-gray-300 text-xs rounded-full border border-white/10 ${isRTL ? 'font-arabic' : ''}`}
-                      >
-                        {tag}
-                      </span>
+        <div id="project-list" className="mt-8">
+          {visible.length === 0 ? (
+            <p className="rounded-2xl border border-dashed border-line px-6 py-16 text-center text-muted">
+              {t.projects.empty}
+            </p>
+          ) : (
+            <>
+              {withImages.length > 0 && (
+                <div className="grid gap-5 md:grid-cols-2">
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {withImages.map((project, index) => (
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        lead={index === 0 && withImages.length % 2 === 1}
+                        onOpen={openProject}
+                      />
                     ))}
-                  </div>
+                  </AnimatePresence>
                 </div>
-              </div>
-
-                {/* Mobile Actions */}
-                <div className={`mt-6 pt-6 border-t border-white/5 flex gap-4 md:hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {project.github !== '#' && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm font-medium hover:bg-white/10 transition-colors ${isRTL ? 'font-arabic' : ''}`}
-                    >
-                      <Github size={18} />
-                      {isRTL ? 'الكود' : 'GitHub'}
-                    </a>
-                  )}
-                  {project.demo !== '#' && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-500 text-sm font-medium hover:bg-blue-500/20 transition-colors ${isRTL ? 'font-arabic' : ''}`}
-                    >
-                      <ExternalLink size={18} />
-                      {isRTL ? 'المعاينة' : 'Demo'}
-                    </a>
-                  )}
+              )}
+              {withoutImages.length > 0 && (
+                <div className={`grid gap-5 sm:grid-cols-2 lg:grid-cols-3 ${withImages.length > 0 ? 'mt-5' : ''}`}>
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {withoutImages.map((project) => (
+                      <ProjectCard key={project.id} project={project} onOpen={openProject} />
+                    ))}
+                  </AnimatePresence>
                 </div>
-            </motion.div>
-          ))}
+              )}
+            </>
+          )}
         </div>
+
+        {filter === 'all' && (
+          <div className="mt-10 flex justify-center">
+            <button
+              ref={toggleRef}
+              type="button"
+              onClick={toggleExpanded}
+              aria-expanded={expanded}
+              aria-controls="project-list"
+              className={buttonSecondary}
+            >
+              {expanded ? (
+                <Minus className="size-4" strokeWidth={2} aria-hidden />
+              ) : (
+                <Plus className="size-4" strokeWidth={2} aria-hidden />
+              )}
+              {expanded ? t.projects.less : format(t.projects.more, { count: projects.length })}
+            </button>
+          </div>
+        )}
       </div>
+
+      <ProjectDialog
+        project={selected}
+        dialogRef={dialogRef}
+        onClose={() => triggerRef.current?.focus({ preventScroll: true })}
+      />
     </section>
   );
-};
-
-export default Projects;
+}

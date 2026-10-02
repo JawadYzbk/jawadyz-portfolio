@@ -1,57 +1,65 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import en from '../translations/en.json';
-import ar from '../translations/ar.json';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { LazyMotion, MotionConfig, domAnimation } from 'framer-motion';
+import en from '@/translations/en.json';
+import ar from '@/translations/ar.json';
+import { LANGUAGE_COOKIE, savePreference, type Language } from '@/lib/preferences';
 
-type Language = 'en' | 'ar';
 type Translations = typeof en;
 
-interface LanguageContextType {
+type LanguageContextValue = {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (language: Language) => void;
   t: Translations;
   isRTL: boolean;
-}
+};
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const dictionaries: Record<Language, Translations> = { en, ar };
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>('en');
+const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem('language') as Language;
-    if (savedLang && (savedLang === 'en' || savedLang === 'ar')) {
-      setLanguageState(savedLang);
-    }
+export function LanguageProvider({
+  initialLanguage,
+  children,
+}: {
+  initialLanguage: Language;
+  children: React.ReactNode;
+}) {
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
+
+  const setLanguage = useCallback((next: Language) => {
+    setLanguageState(next);
+    savePreference(LANGUAGE_COOKIE, next);
+    const root = document.documentElement;
+    root.lang = next;
+    root.dir = next === 'ar' ? 'rtl' : 'ltr';
   }, []);
 
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem('language', lang);
-  };
-
-  const t = language === 'en' ? en : ar;
-  const isRTL = language === 'ar';
-
-  useEffect(() => {
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-    document.documentElement.lang = language;
-  }, [isRTL, language]);
+  const value = useMemo(
+    () => ({ language, setLanguage, t: dictionaries[language], isRTL: language === 'ar' }),
+    [language, setLanguage],
+  );
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
-      <div className={isRTL ? 'font-arabic' : ''}>
-        {children}
-      </div>
+    <LanguageContext.Provider value={value}>
+      <MotionConfig reducedMotion="user">
+        {/* Only the animation features the page uses are bundled. */}
+        <LazyMotion features={domAnimation} strict>
+          {children}
+        </LazyMotion>
+      </MotionConfig>
     </LanguageContext.Provider>
   );
-};
+}
 
-export const useLanguage = () => {
+export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
+  if (!context) throw new Error('useLanguage must be used within a LanguageProvider');
   return context;
-};
+}
+
+/** Replace `{name}` placeholders in a dictionary string. */
+export function format(template: string, values: Record<string, string | number>) {
+  return template.replace(/\{(\w+)\}/g, (match, key: string) => String(values[key] ?? match));
+}
